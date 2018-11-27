@@ -1,0 +1,49 @@
+﻿@model SpreetailTaskManager.ViewModels.DevTaskViewModel
+@{
+    ViewBag.Title = "Update a Task";
+}
+
+<h1>Update Task</h1>
+
+@using (Html.BeginForm("Update", "DevTasks"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title)
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Title)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DueDate, "Due Date")
+        @Html.TextBoxFor(m => m.DueDate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.DueDate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Description)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Priority)
+        @Html.DropDownListFor(m => m.Priority, new SelectList(Model.Priorities.OrderBy(t => t.Id), "Id", "Name"), new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Priority)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ParentId, "Parent Task")
+        @Html.DropDownListFor(m => m.ParentId, new SelectList(Model.Tasks.OrderBy(t => t.Title), "Id", "Title"), new { @class = "form-control", @id = "Foo"})
+        @Html.ValidationMessageFor(m => m.ParentId)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Task</button> <a href="/"><button type="button" class="btn btn-link">Cancel</button></a>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#Foo").prepend('<option selected="selected" value="0"> None </option>');
+        });
+    </script>
+}
+
